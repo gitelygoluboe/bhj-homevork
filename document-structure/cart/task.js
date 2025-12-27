@@ -4,9 +4,12 @@ let value = Array.from(document.querySelectorAll('.product__quantity-value'))
 let product = Array.from(document.querySelectorAll('.product'))
 let addItem = Array.from(document.querySelectorAll('.product__add'))
 let images = Array.from(document.querySelectorAll('.product__image'))
+let cards = []
 for(let i = 0; i < product.length; i++){
     dec[i].addEventListener('click',function(event){
-        value[dec.indexOf(event.currentTarget)].textContent = Number(value[dec.indexOf(event.currentTarget)].textContent)-1
+        if(Number(value[dec.indexOf(event.currentTarget)].textContent)-1 > 0){
+            value[dec.indexOf(event.currentTarget)].textContent = Number(value[dec.indexOf(event.currentTarget)].textContent)-1
+        }
     })
     inc[i].addEventListener('click',function(event){
         value[inc.indexOf(event.currentTarget)].textContent = Number(value[inc.indexOf(event.currentTarget)].textContent)+1
@@ -23,13 +26,13 @@ for(let i = 0; i < product.length; i++){
         div1.className = 'cart__product-count'
         div1.textContent = value[addItem.indexOf(event.currentTarget)].textContent
         div.appendChild(div1)
-        let parent = document.querySelector(`[dataId="${addItem.indexOf(event.currentTarget)+1}"]`)
-        console.log(`[dataId="${addItem.indexOf(event.currentTarget)}"]`)
-        console.log(document.querySelector(`[dataId="${addItem.indexOf(event.currentTarget)}"]`))
-        if(parent == null){
+        const productInCard = cards.find(number => number == addItem.indexOf(event.currentTarget)+1)
+        if(productInCard){
+            let oldCount = document.querySelector(`[dataId="${addItem.indexOf(event.currentTarget)+1}"] div`)
+            oldCount.textContent = Number(oldCount.textContent) + Number(div1.textContent)
+        }else{
             document.querySelector('.cart__products').appendChild(div)
-        } else{
-            parent.replaceWith(div)
+            cards.push(addItem.indexOf(event.currentTarget)+1)
         }
         
     })
